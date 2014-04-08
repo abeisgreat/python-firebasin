@@ -5,9 +5,9 @@ import time
 import datetime
 from threading import Timer
 
-from connection import Connection
-from structure import Structure
-from debug import debug
+from .connection import Connection
+from .structure import Structure
+from .debug import debug
 
 class DataRef(object):
     '''Reference a specific location in a Firebase.'''
@@ -277,14 +277,14 @@ class RootDataRef(DataRef):
                 if error != 'ok':
                     if error == 'permission_denied':
                         path = request['d']['b']['p']
-                        print 'FIREBASE WARNING: on() or once() for %s failed: %s' % (path, error)
+                        print('FIREBASE WARNING: on() or once() for %s failed: %s' % (path, error))
 
                     elif error == 'expired_token' or error == 'invalid_token':
-                        print 'FIREBASE WARNING: auth() failed: %s' % (error)
+                        print('FIREBASE WARNING: auth() failed: %s' % (error))
 
                     else:
                         path = request['d']['b']['p']
-                        print 'FIREBASE WARNING: unknown for %s failed: %s' % (path, error)
+                        print('FIREBASE WARNING: unknown for %s failed: %s' % (path, error))
 
                     onCancel = callbacks.get('onCancel', None)
                     if not onCancel is None:

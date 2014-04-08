@@ -25,42 +25,42 @@ server = Firebase(FIREBASE_URL)
 
 
 def on_child_added(snapshot):
-    print str(snapshot.name()) + ' < child_added to /test_child_added/'
+    print(str(snapshot.name()) + ' < child_added to /test_child_added/')
 
 
 def on_value_read(snapshot):
-    print str(snapshot.name()) + str(snapshot.val()) + ' < value of test '
+    print(str(snapshot.name()) + str(snapshot.val()) + ' < value of test ')
 
 
 def on_child_added(snapshot):
-    print str(snapshot.name()) + ' < child_added to /test_child_added/'
+    print(str(snapshot.name()) + ' < child_added to /test_child_added/')
 
 def on_value_read(snapshot):
-    print str(snapshot.val())  + ' < value of /test_value_read/' + snapshot.name()
+    print(str(snapshot.val())  + ' < value of /test_value_read/' + snapshot.name())
 
 def on_child_removed (snapshot):
-    print str(snapshot.val()) + ' < child_removed from /test_child_removed/'
+    print(str(snapshot.val()) + ' < child_removed from /test_child_removed/')
 
 def on_child_added(snapshot):
-    print str(snapshot.name()) + ' < child_added to /test_child_added/'
+    print(str(snapshot.name()) + ' < child_added to /test_child_added/')
 
 def on_value_read(snapshot):
-    print str(snapshot.name()) + str(snapshot.val()) + ' < value of test '
+    print(str(snapshot.name()) + str(snapshot.val()) + ' < value of test ')
 
 def on_child_changed (snapshot):
-    print str(snapshot.name()) + ' < child_changed in /test_child_changed/'
+    print(str(snapshot.name()) + ' < child_changed in /test_child_changed/')
 
 def on_child_added_once (snapshot):
-    print str(snapshot.name()) + ' < child_added once!'
+    print(str(snapshot.name()) + ' < child_added once!')
 
 def on_value_read_specific(snapshot):
-    print snapshot.val(), "<specific"
+    print(snapshot.val(), "<specific")
 
 def onCancel(data):
-    print 'On was canceled'
+    print('On was canceled')
 
 def onComplete(data):
-    print 'Set was completed', data
+    print('Set was completed', data)
 
 
 server.child("ask").on('value', on_value_read)

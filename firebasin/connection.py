@@ -3,7 +3,7 @@ import threading
 import time
 import json
 
-from debug import debug
+from .debug import debug
 
 class Connection(threading.Thread):
     '''Connect to a Firebase websocket.'''
