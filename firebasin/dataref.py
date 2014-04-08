@@ -252,6 +252,7 @@ class RootDataRef(DataRef):
         self.subscriptions = {}
         self.history = []
         self.connection.daemon = True
+        self.connection.do_handshake()
         self.connection.start()
         self._keep_alive()
         atexit.register(self.close)
