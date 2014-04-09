@@ -20,7 +20,7 @@ class Connection(threading.Thread):
         self.connected = False
         self.stopped = False
 
-    def handshake(self):
+    def do_handshake(self):
         '''Perform a handshake.'''
 
         def set_url(d):
