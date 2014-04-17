@@ -359,9 +359,13 @@ class RootDataRef(DataRef):
 
         def send():
             self._send({"t":"d", "d":{"r":0}})
-            Timer(60.0, send).start()
+            t = Timer(60.0, send)
+            t.setDaemon(True)
+            t.start()
 
-        Timer(60.0, send).start() 
+        t = Timer(60.0, send)
+        t.setDaemon(True)
+        t.start()
 
     def _bind(self, path, event, callback):
         '''Bind a single callback to an event on a path'''
