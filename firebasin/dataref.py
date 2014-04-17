@@ -5,9 +5,9 @@ import time
 import datetime
 from threading import Timer
 
-from connection import Connection
-from structure import Structure
-from debug import debug
+from .connection import Connection
+from .structure import Structure
+from .debug import debug
 
 class DataRef(object):
     '''Reference a specific location in a Firebase.'''
@@ -252,6 +252,7 @@ class RootDataRef(DataRef):
         self.subscriptions = {}
         self.history = []
         self.connection.daemon = True
+        self.connection.do_handshake()
         self.connection.start()
         self._keep_alive()
         atexit.register(self.close)
@@ -277,14 +278,14 @@ class RootDataRef(DataRef):
                 if error != 'ok':
                     if error == 'permission_denied':
                         path = request['d']['b']['p']
-                        print 'FIREBASE WARNING: on() or once() for %s failed: %s' % (path, error)
+                        print('FIREBASE WARNING: on() or once() for %s failed: %s' % (path, error))
 
                     elif error == 'expired_token' or error == 'invalid_token':
-                        print 'FIREBASE WARNING: auth() failed: %s' % (error)
+                        print('FIREBASE WARNING: auth() failed: %s' % (error))
 
                     else:
                         path = request['d']['b']['p']
-                        print 'FIREBASE WARNING: unknown for %s failed: %s' % (path, error)
+                        print('FIREBASE WARNING: unknown for %s failed: %s' % (path, error))
 
                     onCancel = callbacks.get('onCancel', None)
                     if not onCancel is None:
@@ -358,9 +359,13 @@ class RootDataRef(DataRef):
 
         def send():
             self._send({"t":"d", "d":{"r":0}})
-            Timer(60.0, send).start()
+            t = Timer(60.0, send)
+            t.setDaemon(True)
+            t.start()
 
-        Timer(60.0, send).start() 
+        t = Timer(60.0, send)
+        t.setDaemon(True)
+        t.start()
 
     def _bind(self, path, event, callback):
         '''Bind a single callback to an event on a path'''

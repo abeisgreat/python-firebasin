@@ -1,4 +1,4 @@
-from datasnapshot import *
+from .datasnapshot import *
 
 class Structure(dict):
     '''Hold data related to paths in an organized way.'''

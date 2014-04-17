@@ -3,7 +3,7 @@ import threading
 import time
 import json
 
-from debug import debug
+from .debug import debug
 
 class Connection(threading.Thread):
     '''Connect to a Firebase websocket.'''
@@ -20,8 +20,8 @@ class Connection(threading.Thread):
         self.connected = False
         self.stopped = False
 
-    def run(self):
-        '''Perform a handshake then connect to a Firebase.'''
+    def do_handshake(self):
+        '''Perform a handshake.'''
 
         def set_url(d):
             self.handshake.close()
@@ -36,10 +36,7 @@ class Connection(threading.Thread):
         while not self.url:
             time.sleep(0.1)
 
-        # Once we have the url connect
-        self.connect()
-
-    def connect(self):
+    def run(self):
         '''Connect to a Firebase.'''
 
         # Sometimes self.url is a dictionary with extra data, definitely don't know why that is.
