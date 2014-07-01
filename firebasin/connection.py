@@ -8,7 +8,7 @@ from debug import debug
 class Connection(threading.Thread):
     '''Connect to a Firebase websocket.'''
 
-    def __init__(self, url, root):
+    def __init__(self, url, root, ssl_options=None):
         threading.Thread.__init__(self)
 
         self.parsed_url = self.parse_url(url)
@@ -19,6 +19,7 @@ class Connection(threading.Thread):
         self.data = None
         self.connected = False
         self.stopped = False
+        self.ssl_options = ssl_options
 
     def run(self):
         '''Perform a handshake then connect to a Firebase.'''
@@ -28,7 +29,8 @@ class Connection(threading.Thread):
             self.url = d['d']['d']
 
         # An initial handshake is done which returns the actual websocket URL
-        self.handshake = DataClient('wss://' + '.'.join(self.parsed_url) + '/.ws?v=5')
+        self.handshake = DataClient('wss://' + '.'.join(self.parsed_url) + '/.ws?v=5',
+                                    ssl_options=self.ssl_options)
         self.handshake.on_received = set_url
         self.handshake.connect()
 
@@ -47,7 +49,8 @@ class Connection(threading.Thread):
             debug('Dictionary URL Received')
             self.url = self.url['h']
 
-        self.data = DataClient('wss://' + self.url + '/.ws?v=5&ns=' + self.parsed_url[0])
+        self.data = DataClient('wss://' + self.url + '/.ws?v=5&ns=' + self.parsed_url[0],
+                               ssl_options=self.ssl_options)
         self.data.on_opened = self.send_outgoing
 
         def on_connected():
@@ -94,8 +97,8 @@ class Connection(threading.Thread):
 class DataClient(WebSocketClient):
     '''Connect to a web socket.'''
 
-    def __init__(self, url):
-        WebSocketClient.__init__(self, url)
+    def __init__(self, url, ssl_options=None):
+        WebSocketClient.__init__(self, url, ssl_options=ssl_options)
         self.data = []
         self.partialdata = []
         self.partialdatanumber = 1

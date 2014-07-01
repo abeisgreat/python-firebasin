@@ -244,9 +244,9 @@ class DataRef(object):
 class RootDataRef(DataRef):
     '''A reference to a root of a Firbase.'''
 
-    def __init__(self, url):
+    def __init__(self, url, ssl_options=None):
         '''Construct a new Firebase reference from a full Firebase URL.'''
-        self.connection = Connection(url, self)
+        self.connection = Connection(url, self, ssl_options=ssl_options)
         self.base_url = url
         self.structure = Structure(self)
         self.subscriptions = {}
