@@ -21,7 +21,7 @@ class Structure(dict):
         def iterative(path, path_data):
             stack=LifoQueue()
             while 1:
-                if not (type(path_data) == dict and path_data):
+                if not (type(path_data) == dict and path_data is not None):
                     changes.append(self.store_one(path, path_data))
                 else:
                     for node in path_data:
@@ -47,11 +47,11 @@ class Structure(dict):
 
         change = []
         if path in self: 
-            if '.data' in self[path] and self[path]['.data'] and not path_data:
+            if '.data' in self[path] and self[path]['.data'] and path_data is None:
                 change = ['delete', path, None]
                 self[path]['.data'] = None
 
-            elif '.data' in self[path] and self[path]['.data'] and path_data:
+            elif '.data' in self[path] and self[path]['.data'] and path_data is not None:
                 change = ['update', path, path_data]
                 self[path]['.data'] = path_data
                 for ancestor_path in self.ancestors(path):
@@ -94,7 +94,7 @@ class Structure(dict):
 
                 if action == 'create':
                     self.trigger(path, 'value', data=value) 
-                    if value and parent:
+                    if value is not None and parent:
                         self.trigger(parent, 'child_added', data=value, snapshot_path=path)
 
                     ancestors.update(all_ancestors)
@@ -174,7 +174,7 @@ class Structure(dict):
                 kpath_node = self.get(kpath, {})
                 if '.data' in kpath_node:
                     kpath_data = kpath_node['.data']
-                    if kpath_data or kpath_data == {}:
+                    if kpath_data is not None or kpath_data == {}:
                         if type(kpath_data) == type(dict()):
                             obj[key] = recursive(kpath)
                             if obj[key] == {}:
