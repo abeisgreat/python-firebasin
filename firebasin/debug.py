@@ -4,3 +4,4 @@ def debug(*args):
     
     if VERBOSE:
         print args
+KONTOL
